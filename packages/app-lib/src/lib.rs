@@ -10,13 +10,15 @@ and launching Modrinth mod packs
 #[macro_use]
 mod util;
 
+pub use util::fetch;
+
 mod api;
 mod config;
 mod error;
 mod event;
 mod launcher;
 mod logger;
-mod state;
+pub mod state;
 
 pub use api::*;
 pub use error::*;

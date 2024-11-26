@@ -30,6 +30,7 @@ use std::{
     path::{Path, PathBuf},
     sync::Arc,
 };
+use std::process::Stdio;
 use tokio::io::AsyncReadExt;
 use tokio::{fs::File, process::Command, sync::RwLock};
 
@@ -652,6 +653,9 @@ pub async fn run_credentials(
             let result = Command::new(command)
                 .args(cmd.collect::<Vec<&str>>())
                 .current_dir(&full_path)
+                .stdout(Stdio::null())
+                .stderr(Stdio::null())
+                .stdin(Stdio::null())
                 .spawn()
                 .map_err(|e| IOError::with_path(e, &full_path))?
                 .wait()

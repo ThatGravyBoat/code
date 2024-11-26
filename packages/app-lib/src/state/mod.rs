@@ -60,7 +60,7 @@ pub struct State {
     /// Process manager
     pub process_manager: ProcessManager,
 
-    pub(crate) pool: SqlitePool,
+    pub pool: SqlitePool,
 
     pub(crate) file_watcher: FileWatcher,
 }

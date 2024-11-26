@@ -37,8 +37,9 @@ pub struct LatestLogCursor {
 
 #[derive(Serialize, Debug)] // Not deserialize
 #[serde(transparent)]
-pub struct CensoredString(String);
+pub struct CensoredString(pub String);
 impl CensoredString {
+
     pub fn censor(mut s: String, credentials_set: &Vec<Credentials>) -> Self {
         let username = whoami::username();
         s = s

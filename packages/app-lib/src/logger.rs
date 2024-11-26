@@ -17,26 +17,6 @@
 
 // Handling for the live development logging
 // This will log to the console, and will not log to a file
-#[cfg(debug_assertions)]
-pub fn start_logger() -> Option<()> {
-    use tracing_subscriber::prelude::*;
-
-    let filter = tracing_subscriber::EnvFilter::try_from_default_env()
-        .unwrap_or_else(|_| {
-            tracing_subscriber::EnvFilter::new("theseus=info,theseus_gui=info")
-        });
-    let subscriber = tracing_subscriber::registry()
-        .with(tracing_subscriber::fmt::layer())
-        .with(filter)
-        .with(tracing_error::ErrorLayer::default());
-    tracing::subscriber::set_global_default(subscriber)
-        .expect("setting default subscriber failed");
-    Some(())
-}
-
-// Handling for the live production logging
-// This will log to a file in the logs directory, and will not show any logs in the console
-#[cfg(not(debug_assertions))]
 pub fn start_logger() -> Option<()> {
     use crate::prelude::DirectoryInfo;
     use chrono::Local;

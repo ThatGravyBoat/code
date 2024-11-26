@@ -6,7 +6,7 @@ use chrono::{DateTime, Utc};
 use dashmap::DashMap;
 use serde::Deserialize;
 use serde::Serialize;
-use std::process::ExitStatus;
+use std::process::{ExitStatus, Stdio};
 use tokio::process::{Child, Command};
 use uuid::Uuid;
 
@@ -33,7 +33,11 @@ impl ProcessManager {
         mut mc_command: Command,
         post_exit_command: Option<String>,
     ) -> crate::Result<ProcessMetadata> {
-        let mc_proc = mc_command.spawn().map_err(IOError::from)?;
+        let mc_proc = mc_command
+            .stdout(Stdio::null())
+            .stderr(Stdio::null())
+            .stdin(Stdio::null())
+            .spawn().map_err(IOError::from)?;
 
         let process = Process {
             metadata: ProcessMetadata {
@@ -225,7 +229,7 @@ impl Process {
                     let mut command = Command::new(command);
                     command.args(cmd.collect::<Vec<&str>>()).current_dir(
                         profile::get_full_path(&profile_path).await?,
-                    );
+                    ).stdout(Stdio::null()).stderr(Stdio::null()).stdin(Stdio::null());
                     command.spawn().map_err(IOError::from)?;
                 }
             }

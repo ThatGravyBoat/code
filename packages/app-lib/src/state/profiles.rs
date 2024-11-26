@@ -97,6 +97,12 @@ pub enum ModLoader {
     NeoForge,
 }
 
+impl ToString for ModLoader {
+    fn to_string(&self) -> String {
+        self.as_str().to_string()
+    }
+}
+
 impl ModLoader {
     pub fn as_str(&self) -> &'static str {
         match *self {
@@ -203,6 +209,15 @@ impl ProjectType {
             ProjectType::DataPack => "datapacks",
             ProjectType::ResourcePack => "resourcepacks",
             ProjectType::ShaderPack => "shaderpacks",
+        }
+    }
+
+    pub fn get_folder_with_suffix(&self) -> &'static str {
+        match self {
+            ProjectType::Mod => "mods/",
+            ProjectType::DataPack => "datapacks/",
+            ProjectType::ResourcePack => "resourcepacks/",
+            ProjectType::ShaderPack => "shaderpacks/",
         }
     }
 
